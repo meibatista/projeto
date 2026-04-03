@@ -8,18 +8,16 @@ public class Questao {
 	private long provaId;
 
 	private String enunciado;
-	private String[] alternativas = new String[5];
+	private String[] alternativas;
 	private char alternativaCorreta;
 
 	private String fenInicial;
 
-	public String getFenInicial() {
-		return fenInicial;
+	public Questao() {
+		this.alternativas = new String[5];
 	}
 
-	public void setFenInicial(String fenInicial) {
-		this.fenInicial = fenInicial;
-	}
+	// ================= GETTERS / SETTERS =================
 
 	public long getId() {
 		return id;
@@ -50,9 +48,7 @@ public class Questao {
 	}
 
 	public void setAlternativas(String[] alternativas) {
-		if (alternativas == null || alternativas.length != 5) {
-			throw new IllegalArgumentException("A questão deve possuir exatamente 5 alternativas.");
-		}
+		validarAlternativas(alternativas);
 		this.alternativas = Arrays.copyOf(alternativas, 5);
 	}
 
@@ -61,19 +57,39 @@ public class Questao {
 	}
 
 	public void setAlternativaCorreta(char alternativaCorreta) {
-		this.alternativaCorreta = normalizar(alternativaCorreta);
+		this.alternativaCorreta = normalizarAlternativa(alternativaCorreta);
 	}
 
-	public boolean isRespostaCorreta(char marcada) {
-		return normalizar(marcada) == alternativaCorreta;
+	public String getFenInicial() {
+		return fenInicial;
 	}
 
-	public static char normalizar(char c) {
-		char up = Character.toUpperCase(c);
-		if (up < 'A' || up > 'E') {
-			throw new IllegalArgumentException("Alternativa deve estar entre A e E.");
+	public void setFenInicial(String fenInicial) {
+		this.fenInicial = fenInicial;
+	}
+
+	// ================= REGRAS DE NEGÓCIO =================
+
+	public boolean isRespostaCorreta(char resposta) {
+		char alternativa = normalizarAlternativa(resposta);
+		return alternativa == this.alternativaCorreta;
+	}
+
+	// ================= VALIDAÇÕES =================
+
+	private void validarAlternativas(String[] alternativas) {
+		if (alternativas == null || alternativas.length != 5) {
+			throw new IllegalArgumentException("A questão deve ter 5 alternativas.");
 		}
-		return up;
 	}
 
+	public static char normalizarAlternativa(char c) {
+		char letra = Character.toUpperCase(c);
+
+		if (letra < 'A' || letra > 'E') {
+			throw new IllegalArgumentException("Alternativa inválida (use A até E)");
+		}
+
+		return letra;
+	}
 }
