@@ -5,6 +5,14 @@ public class Prova {
 	private long id;
 	private String titulo;
 
+	public Prova() {
+	}
+
+	public Prova(long id, String titulo) {
+		this.id = id;
+		this.titulo = titulo;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -18,7 +26,9 @@ public class Prova {
 	}
 
 	public void setTitulo(String titulo) {
+		if (titulo == null || titulo.trim().isEmpty()) {
+			throw new IllegalArgumentException("Título inválido");
+		}
 		this.titulo = titulo;
 	}
-
 }
