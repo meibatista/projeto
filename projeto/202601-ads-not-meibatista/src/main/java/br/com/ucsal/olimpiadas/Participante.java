@@ -1,9 +1,19 @@
 package br.com.ucsal.olimpiadas;
 
 public class Participante {
+
 	private long id;
 	private String nome;
 	private String email;
+
+	public Participante() {
+	}
+
+	public Participante(long id, String nome, String email) {
+		this.id = id;
+		this.nome = nome;
+		this.email = email;
+	}
 
 	public long getId() {
 		return id;
@@ -18,6 +28,9 @@ public class Participante {
 	}
 
 	public void setNome(String nome) {
+		if (nome == null || nome.trim().isEmpty()) {
+			throw new IllegalArgumentException("Nome inválido");
+		}
 		this.nome = nome;
 	}
 
